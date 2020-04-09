@@ -4,16 +4,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>2020年双十一倒计时</title>
+    <title>countDown with promise</title>
 </head>
 
 <body>
-    <header只使用了setTimeout实现的倒计时</header> 
+    <header>使用PROMISE实现的倒计时</header> 
     <button value="" id="btn">抢购</button>
     <div id="time"></div>
     <script>
         let btn = document.querySelector('#btn'),
-            timing = document.querySelector("#time");
+            timing = document.querySelector("#time"),
+            lastTime = 0;
         btn.disabled = true;
 
         function format(ms) {
@@ -22,22 +23,35 @@
             let min = Math.floor(ms / 60 % 60),
                 sec = ms % 60;
             let leftTime = `${day}天${hour}时${min}分${sec}秒`;
-            return leftTime;
+            timing.innerHTML = leftTime;
         }
 
-        function reNew() {
+
+        function getInterval() {
             let defNow = new Date().getTime(),
                 ddl = new Date("2020/11/11,00:00:00").getTime(); //2020/11/11,00:00:00
             let res = Math.floor((new Date(ddl - defNow)) / 1000);
-            timing.innerHTML = format(res);
-            if (res > 0) {
-                setTimeout(reNew, 1000);
-            } else {
-                btn.disabled = false;
-            }
+            return res;
         }
 
-        window.onload = reNew();
+        function reNew(ms) {
+            return new Promise((resolve, rejected) => {
+                setTimeout(() => {
+                    resolve();              
+                }, ms);
+            }).then(() => {
+                let res = getInterval();
+                format(res);
+                res>0 && reNew(1000);
+                res<=0 && (btn.disabled=false);
+            })
+        }
+
+        window.onload = reNew(1000).then(() => {
+            let res = getInterval();
+            res>0 && format(res);
+            res<=0 && (btn.disabled=false);
+        })
     </script>
 </body>
 
