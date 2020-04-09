@@ -28,7 +28,7 @@
 
         function reNew() {
             let defNow = new Date().getTime(),
-                ddl = new Date("2020/4/9,21:55:00").getTime(); //2020/11/11,00:00:00
+                ddl = new Date("2020/11/11,00:00:00").getTime(); //2020/11/11,00:00:00
             let res = Math.floor((new Date(ddl - defNow)) / 1000);
             timing.innerHTML = format(res);
             bias = new Date().getTime() - startTime - count*1000;
