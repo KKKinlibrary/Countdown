@@ -14,7 +14,7 @@
     <script>
         let btn = document.querySelector('#btn'),
             timing = document.querySelector("#time"),
-            lastTime = 0;
+            count=0, startTime=new Date().getTime(), bias; // 利用bias设置每次的记录时间差值，减少误差
         btn.disabled = true;
 
         function format(ms) {
@@ -37,12 +37,15 @@
         function reNew(ms) {
             return new Promise((resolve, rejected) => {
                 setTimeout(() => {
+                    count++;
+                    bias = new Date().getTime() - count*1000 - startTime;
+                    // console.log(bias);
                     resolve();              
                 }, ms);
             }).then(() => {
                 let res = getInterval();
                 format(res);
-                res>0 && reNew(1000);
+                res>0 && reNew(1000-bias);
                 res<=0 && (btn.disabled=false);
             })
         }

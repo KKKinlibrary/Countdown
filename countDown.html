@@ -13,8 +13,9 @@
     <div id="time"></div>
     <script>
         let btn = document.querySelector('#btn'),
-            timing = document.querySelector("#time");
-        btn.disabled = true;
+            timing = document.querySelector("#time"),
+            count=0, startTime=new Date().getTime(), bias; // 利用bias设置每次的记录时间差值，减少误差
+        btn.disabled = true
 
         function format(ms) {
             let day = Math.floor(ms / 60 / 60 / 24),
@@ -30,8 +31,11 @@
                 ddl = new Date("2020/11/11,00:00:00").getTime(); //2020/11/11,00:00:00
             let res = Math.floor((new Date(ddl - defNow)) / 1000);
             timing.innerHTML = format(res);
+            bias = new Date().getTime() - startTime - count*1000;
+            count++;
+            // console.log(bias);
             if (res > 0) {
-                setTimeout(reNew, 1000);
+                setTimeout(reNew, 1000-bias);
             } else {
                 btn.disabled = false;
             }
