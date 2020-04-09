@@ -1,1 +1,2 @@
-#没有用到promise的版本
+在线查看demo
+https://kkkinlibrary.github.io/Countdown/countDown.html
