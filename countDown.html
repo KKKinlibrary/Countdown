@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CountDown</title>
+</head>
+
+<body>
+    <button value="" id="btn">抢购</button>
+    <div id="time"></div>
+    <script>
+        let btn = document.querySelector('#btn'),
+            timing = document.querySelector("#time");
+        btn.disabled = true;
+
+        function format(ms) {
+            let day = Math.floor(ms / 60 / 60 / 24),
+                hour = Math.floor(ms / 60 / 60 % 24);
+            let min = Math.floor(ms / 60 % 60),
+                sec = ms % 60;
+            let leftTime = `${day}天${hour}时${min}分${sec}秒`;
+            return leftTime;
+        }
+
+        function reNew() {
+            let defNow = new Date().getTime(),
+                ddl = new Date("2020/11/11,00:00:00").getTime(); //2020/11/11,00:00:00
+            let res = Math.floor((new Date(ddl - defNow)) / 1000);
+            timing.innerHTML = format(res);
+            if (res > 0) {
+                setTimeout(reNew, 1000);
+            } else {
+                btn.disabled = false;
+            }
+        }
+
+        window.onload = reNew();
+    </script>
+</body>
+
+</html>
